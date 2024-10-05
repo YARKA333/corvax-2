@@ -605,6 +605,25 @@ public sealed partial class AdminVerbSystem
         };
         args.Verbs.Add(dust);
 
+        Verb pepel = new()
+        {
+            Text = "admin-smite-pepel-name",
+            Category = VerbCategory.Smite,
+            Icon = new SpriteSpecifier.Rsi(new("/Textures/YARtech/pepel.rsi"), "ash"),
+            Act = () =>
+            {
+                var baseXform = Transform(args.Target);
+                EntityManager.QueueDeleteEntity(args.Target);
+                Spawn("Pepel", Transform(args.Target).Coordinates);
+                //_popupSystem.PopupEntity(Loc.GetString("admin-smite-pepel-self"), args.Target, args.Target, PopupType.LargeCaution); pepel is dead.
+                _popupSystem.PopupCoordinates(Loc.GetString("admin-smite-pepel-others", ("name", args.Target)), baseXform.Coordinates,
+                    Filter.PvsExcept(args.Target), true, PopupType.MediumCaution);
+            },
+            Impact = LogImpact.Extreme,
+            Message = Loc.GetString("admin-smite-pepel-description"),
+        };
+        args.Verbs.Add(pepel);
+
         Verb youtubeVideoSimulation = new()
         {
             Text = "admin-smite-headstand-name",

@@ -29,6 +29,7 @@ using Content.Shared.PDA;
 using Content.Shared.Stacks;
 using Content.Shared.Verbs;
 using Content.Shared.Weapons.Ranged.Components;
+using Content.Shared.YARtech;
 using Robust.Server.Physics;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -742,6 +743,22 @@ public sealed partial class AdminVerbSystem
             };
             args.Verbs.Add(setCapacity);
         }
+
+        Verb pepelGod = new()
+        {
+            Text = "Make God Of Pepel",
+            Category = VerbCategory.Tricks,
+            Icon = new SpriteSpecifier.Rsi(new("/Textures/YARtech/pepel.rsi"), "ash"),
+            Act = () =>
+            {
+                EnsureComp<GodmodeComponent>(args.Target);
+                EnsureComp<PepelComponent>(args.Target);
+            },
+            Impact = LogImpact.Medium,
+            Message = Loc.GetString("admin-trick-pepel-god-description"),
+            Priority = (int) TricksVerbPriorities.PepelGod,
+        };
+        args.Verbs.Add(pepelGod);
     }
 
     private void RefillEquippedTanks(EntityUid target, Gas plasma)
@@ -887,5 +904,6 @@ public sealed partial class AdminVerbSystem
         SnapJoints = -27,
         MakeMinigun = -28,
         SetBulletAmount = -29,
+        PepelGod = -29,
     }
 }

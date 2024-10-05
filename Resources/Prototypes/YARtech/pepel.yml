@@ -1,0 +1,37 @@
+- type: entity
+  parent: BaseItem
+  id: Pepel
+  name: nuclear ash
+  description: Well...
+  components:
+  - type: Sprite
+    sprite: YARtech/pepel.rsi
+    state: ash
+  - type: Pepel
+  - type: RadiationSource
+  ##- type: Physics
+  ##- type: Transform
+  ##  noRot: true
+  - type: CollisionWake
+    enabled: false
+  - type: Clickable
+  - type: InteractionOutline
+  - type: PointLight
+    enabled: true
+    radius: 2
+    energy: 5
+    color: "#ffe000"
+  - type: SinguloFood
+    energy: 10000
+  - type: PepelImmune
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.01
+        density: 1
+        hard: false
+        layer:
+        - Impassable
+        - Opaque
