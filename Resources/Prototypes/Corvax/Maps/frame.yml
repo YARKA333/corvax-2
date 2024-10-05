@@ -47,23 +47,25 @@
               - /Maps/Ruins/whiteship_bluespacejumper.yml
         - type: StationJobs
           availableJobs:
-            # service
-            Passenger: [ -1, -1 ]
-            Clown: [ 1, 1 ]
-            # engineering
-            ChiefEngineer: [ 1, 1 ]
-            AtmosphericTechnician: [ 1, 1 ]
-            StationEngineer: [ 3, 3 ]
-            # medical
-            Paramedic: [ 1, 1 ]
-            # science
-            Scientist: [ 1, 2 ]
-            Borg: [ 1, 1 ]
-            # security
-            Pilot: [ 1, 1 ]
             # cargo
             SalvageSpecialist: [ 3, 3 ]
             CargoTechnician: [ 2, 2 ]
+            # engineering
+            ChiefEngineer: [ 1, 1 ]
+            AtmosphericTechnician: [ 1, 1 ]
+            StationEngineer: [ 3, 6 ]
+            TechnicalAssistant: [ -1, -1 ]
+            # medical
+            Paramedic: [ 1, 1 ]
+            MedicalIntern: [ 0, 1 ]
+            # science
+            Scientist: [ 1, 2 ]
+            # security
+            Pilot: [ 1, 1 ]
+            # service
+            Clown: [ 1, 1 ]
+            # silicon
+            Borg: [ 1, 1 ]
         - type: StationGoal
           goals:
           - FrameRepair

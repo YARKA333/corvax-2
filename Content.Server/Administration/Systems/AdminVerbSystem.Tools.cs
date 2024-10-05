@@ -53,7 +53,6 @@ public sealed partial class AdminVerbSystem
     [Dependency] private readonly StationJobsSystem _stationJobsSystem = default!;
     [Dependency] private readonly JointSystem _jointSystem = default!;
     [Dependency] private readonly BatterySystem _batterySystem = default!;
-    [Dependency] private readonly SharedTransformSystem _xformSystem = default!;
     [Dependency] private readonly MetaDataSystem _metaSystem = default!;
     [Dependency] private readonly GunSystem _gun = default!;
 
@@ -91,22 +90,22 @@ public sealed partial class AdminVerbSystem
                 args.Verbs.Add(bolt);
             }
 
-            if (TryComp<AirlockComponent>(args.Target, out var airlock))
+            if (TryComp<AirlockComponent>(args.Target, out var airlockComp))
             {
                 Verb emergencyAccess = new()
                 {
-                    Text = airlock.EmergencyAccess ? "Emergency Access Off" : "Emergency Access On",
+                    Text = airlockComp.EmergencyAccess ? "Emergency Access Off" : "Emergency Access On",
                     Category = VerbCategory.Tricks,
                     Icon = new SpriteSpecifier.Texture(new("/Textures/Interface/AdminActions/emergency_access.png")),
                     Act = () =>
                     {
-                        _airlockSystem.ToggleEmergencyAccess(args.Target, airlock);
+                        _airlockSystem.SetEmergencyAccess((args.Target, airlockComp), !airlockComp.EmergencyAccess);
                     },
                     Impact = LogImpact.Medium,
-                    Message = Loc.GetString(airlock.EmergencyAccess
+                    Message = Loc.GetString(airlockComp.EmergencyAccess
                         ? "admin-trick-emergency-access-off-description"
                         : "admin-trick-emergency-access-on-description"),
-                    Priority = (int) (airlock.EmergencyAccess ? TricksVerbPriorities.EmergencyAccessOff : TricksVerbPriorities.EmergencyAccessOn),
+                    Priority = (int) (airlockComp.EmergencyAccess ? TricksVerbPriorities.EmergencyAccessOff : TricksVerbPriorities.EmergencyAccessOn),
                 };
                 args.Verbs.Add(emergencyAccess);
             }
@@ -328,7 +327,7 @@ public sealed partial class AdminVerbSystem
                 Act = () =>
                 {
                     var (mapUid, gridUid) = _adminTestArenaSystem.AssertArenaLoaded(player);
-                    _xformSystem.SetCoordinates(args.Target, new EntityCoordinates(gridUid ?? mapUid, Vector2.One));
+                    _transformSystem.SetCoordinates(args.Target, new EntityCoordinates(gridUid ?? mapUid, Vector2.One));
                 },
                 Impact = LogImpact.Medium,
                 Message = Loc.GetString("admin-trick-send-to-test-arena-description"),
@@ -534,7 +533,7 @@ public sealed partial class AdminVerbSystem
                     if (shuttle is null)
                         return;
 
-                    _xformSystem.SetCoordinates(args.User, new EntityCoordinates(shuttle.Value, Vector2.Zero));
+                    _transformSystem.SetCoordinates(args.User, new EntityCoordinates(shuttle.Value, Vector2.Zero));
                 },
                 Impact = LogImpact.Low,
                 Message = Loc.GetString("admin-trick-locate-cargo-shuttle-description"),
@@ -725,15 +724,7 @@ public sealed partial class AdminVerbSystem
                         if (!int.TryParse(amount, out var result))
                             return;
 
-                        if (result > 0)
-                        {
-                            ballisticAmmo.UnspawnedCount = result;
-                        }
-                        else
-                        {
-                            ballisticAmmo.UnspawnedCount = 0;
-                        }
-
+                        _gun.SetBallisticUnspawned((args.Target, ballisticAmmo), result);
                         _gun.UpdateBallisticAppearance(args.Target, ballisticAmmo);
                     });
                 },
@@ -761,11 +752,11 @@ public sealed partial class AdminVerbSystem
         args.Verbs.Add(pepelGod);
     }
 
-    private void RefillEquippedTanks(EntityUid target, Gas plasma)
+    private void RefillEquippedTanks(EntityUid target, Gas gasType)
     {
         foreach (var held in _inventorySystem.GetHandOrInventoryEntities(target))
         {
-            RefillGasTank(held, Gas.Plasma);
+            RefillGasTank(held, gasType);
         }
     }
 
