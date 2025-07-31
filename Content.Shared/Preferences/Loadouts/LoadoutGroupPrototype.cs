@@ -30,6 +30,13 @@ public sealed partial class LoadoutGroupPrototype : IPrototype
     public int MaxLimit = 1;
 
     /// <summary>
+    /// Default clothes for different sexes
+    /// Values are Loadout indexes counted from 1, 0 is none
+    /// </summary>
+    [DataField]
+    public int[]? SexDefault;
+
+    /// <summary>
     /// Hides the loadout group from the player.
     /// </summary>
     [DataField]

@@ -215,6 +215,7 @@
     - FootstepSound
     - DoorBumpOpener
     - AnomalyHost
+  - type: Fart
 
 - type: entity
   save: false

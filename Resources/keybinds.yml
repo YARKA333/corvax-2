@@ -180,6 +180,9 @@ binds:
 - function: LieDown
   type: State
   key: U
+- function: Fart
+  type: State
+  key: F
 - function: ActivateItemInHand
   type: State
   key: Z

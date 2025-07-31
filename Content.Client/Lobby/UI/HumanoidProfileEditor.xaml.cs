@@ -1185,6 +1185,7 @@ namespace Content.Client.Lobby.UI
 
         private void SetSex(Sex newSex)
         {
+            ReloadUnderwear(Profile?.Sex, newSex);
             Profile = Profile?.WithSex(newSex);
             // for convenience, default to most common gender when new sex is selected
             switch (newSex)
@@ -1324,9 +1325,12 @@ namespace Content.Client.Lobby.UI
             }
 
             if (sexes.Contains(Profile.Sex))
-                SexButton.SelectId((int) Profile.Sex);
+                SexButton.SelectId((int)Profile.Sex);
             else
-                SexButton.SelectId((int) sexes[0]);
+            {
+                ReloadUnderwear(Profile.Sex, sexes[0]);
+                SexButton.SelectId((int)sexes[0]);
+            }
         }
 
         private void UpdateSkinColor()
@@ -1720,6 +1724,36 @@ namespace Content.Client.Lobby.UI
             {
                 int height = (int)(_customHeightSystem.GetHeightFromByte(PreviewDummy, (byte)CHeight.Value) * 180f);
                 CHeightInformation.Text = Loc.GetString("humanoid-profile-height-current") + height;
+            }
+        }
+
+        public void ReloadUnderwear(Sex? oldSex, Sex? newSex)
+        {
+            if (Profile is null || ((oldSex == Sex.Female) != (newSex == Sex.Female)))
+                return;
+            foreach (var (_, loadout) in Profile.Loadouts)
+            {
+                foreach (var (groupId, loadouts) in loadout.SelectedLoadouts)
+                {
+                    if (!_prototypeManager.TryIndex(groupId, out var groupProto) || groupProto.SexDefault == null)
+                    {
+                        continue;
+                    }
+
+                    loadouts.Clear();
+
+                    var itemIndex = groupProto.SexDefault[newSex == Sex.Female ? 1 : 0];
+
+                    if (itemIndex != 0 && groupProto.Loadouts.TryGetValue(itemIndex, out var loadoutProto))
+                    {
+                        loadouts.Add(
+                            new Loadout()
+                            {
+                                Prototype = loadoutProto
+                            }
+                        );
+                    }
+                }
             }
         }
     }

@@ -1,13 +1,11 @@
 using Content.Shared.Hands.Components;
 using Content.Shared.Physics;
 using Content.Shared.Rotation;
-using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Input.Binding;
 using Content.Shared.Input;
-using Content.Shared.Movement;
 using Robust.Shared.Serialization;
 using Robust.Shared.Player;
 using Content.Shared.Movement.Systems;
@@ -196,7 +194,7 @@ namespace Content.Shared.Standing
             }
 
             var msg = new DownAttemptEvent();
-            RaiseLocalEvent(uid, msg, false);
+            RaiseLocalEvent(uid, msg);
             if (msg.Cancelled)
                 return false;
 
@@ -278,7 +276,7 @@ namespace Content.Shared.Standing
             if (!force)
             {
                 var msg = new StandAttemptEvent();
-                RaiseLocalEvent(uid, msg, false);
+                RaiseLocalEvent(uid, msg);
 
                 if (msg.Cancelled)
                     return false;
@@ -351,6 +349,8 @@ namespace Content.Shared.Standing
     /// <summary>
     /// Raised when an entity becomes standing
     /// </summary>
+    [Serializable]
+    [NetSerializable]
     public sealed class StoodEvent : EntityEventArgs
     {
     }
@@ -358,6 +358,8 @@ namespace Content.Shared.Standing
     /// <summary>
     /// Raised when an entity is not standing
     /// </summary>
+    [Serializable]
+    [NetSerializable]
     public sealed class DownedEvent : EntityEventArgs
     {
     }
