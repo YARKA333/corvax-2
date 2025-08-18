@@ -28,6 +28,7 @@
   components:
   - type: Item
     size: Tiny
+  - type: Halt
   - type: Sprite
     sprite: Clothing/Mask/gassecurity.rsi
   - type: Clothing

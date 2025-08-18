@@ -39,7 +39,7 @@ public sealed partial class CCVars
     ///     Controls if the game can force a different preset if the current preset's criteria are not met.
     /// </summary>
     public static readonly CVarDef<bool>
-        GameLobbyFallbackEnabled = CVarDef.Create("game.fallbackenabled", true, CVar.ARCHIVE);
+        GameLobbyFallbackEnabled = CVarDef.Create("game.fallbackenabled", false, CVar.ARCHIVE);
 
     /// <summary>
     ///     The preset for the game to fall back to if the selected preset could not be used, and fallback is enabled.
@@ -131,7 +131,7 @@ public sealed partial class CCVars
         CVarDef.Create("game.diagonalmovement", true, CVar.ARCHIVE);
 
     public static readonly CVarDef<int> SoftMaxPlayers =
-        CVarDef.Create("game.soft_max_players", 30, CVar.SERVERONLY | CVar.ARCHIVE);
+        CVarDef.Create("game.soft_max_players", 220, CVar.SERVERONLY | CVar.ARCHIVE);
 
     /// <summary>
     ///     If a player gets denied connection to the server,
@@ -270,7 +270,7 @@ public sealed partial class CCVars
     ///     Set to 0 or a negative number to disable.
     /// </summary>
     public static readonly CVarDef<int> RoundStartFailShutdownCount =
-        CVarDef.Create("game.round_start_fail_shutdown_count", 5, CVar.SERVERONLY | CVar.SERVER);
+        CVarDef.Create("game.round_start_fail_shutdown_count", 0, CVar.SERVERONLY | CVar.SERVER);
 #endif
 
     /// <summary>
@@ -314,7 +314,7 @@ public sealed partial class CCVars
     ///     so it's off by default.
     /// </remarks>
     public static readonly CVarDef<bool> GameTabletopPlace =
-        CVarDef.Create("game.tabletop_place", false, CVar.SERVERONLY);
+        CVarDef.Create("game.tabletop_place", true, CVar.SERVERONLY);
 
     /// <summary>
     ///     If true, contraband severity can be viewed in the examine menu
