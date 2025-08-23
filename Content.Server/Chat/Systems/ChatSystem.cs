@@ -34,7 +34,6 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Replays;
 using Robust.Shared.Utility;
-using Content.Server.YARtech.VoiceOfGod;
 
 namespace Content.Server.Chat.Systems;
 
@@ -457,15 +456,6 @@ public sealed partial class ChatSystem : SharedChatSystem
             ("fontSize", speech.FontSize),
             ("message", FormattedMessage.EscapeText(message)));
 
-        if (TryComp<VoiceOfGodComponent>(source, out var comp))
-        {
-            wrappedMessage = Loc.GetString(comp.ChatLoc,
-                ("entityName", name),
-                ("message", message),
-                ("color", comp.ChatColor)
-            );
-        }
-
         SendInVoiceRange(ChatChannel.Local, message, wrappedMessage, source, range);
 
         var ev = new EntitySpokeEvent(source, message, originalMessage, null, null);
@@ -717,7 +707,7 @@ public sealed partial class ChatSystem : SharedChatSystem
     /// <summary>
     ///     Sends a chat message to the given players in range of the source entity.
     /// </summary>
-    public void SendInVoiceRange(ChatChannel channel, string message, string wrappedMessage, EntityUid source, ChatTransmitRange range, NetUserId? author = null)
+    private void SendInVoiceRange(ChatChannel channel, string message, string wrappedMessage, EntityUid source, ChatTransmitRange range, NetUserId? author = null)
     {
         foreach (var (session, data) in GetRecipients(source, VoiceRange))
         {
