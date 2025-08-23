@@ -172,9 +172,6 @@ public sealed class PaperSystem : EntitySystem
 
         entity.Comp.Mode = PaperAction.Read;
         UpdateUserInterface(entity);
-
-        var writeAfterEv = new PaperAfterWriteEvent(args.Actor);
-        RaiseLocalEvent(entity.Owner, ref writeAfterEv);
     }
 
     private void OnPaperWrite(Entity<ActivateOnPaperOpenedComponent> entity, ref PaperWriteEvent args)
@@ -229,10 +226,3 @@ public sealed class PaperSystem : EntitySystem
 /// </summary>
 [ByRefEvent]
 public record struct PaperWriteEvent(EntityUid User, EntityUid Paper);
-
-/// <summary>
-/// Event raised on paper after it was written on by someone.
-/// </summary>
-/// <param name="Actor">Entity that wrote something on the paper.</param>
-[ByRefEvent]
-public readonly record struct PaperAfterWriteEvent(EntityUid Actor);
